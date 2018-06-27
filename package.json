@@ -1,5 +1,5 @@
 {
-    "name": "marko",
+    "name": "marko-drivenow-mobx",
     "version": "4.11.2",
     "license": "MIT",
     "description": "UI Components + streaming, async, high performance, HTML templating for Node.js and the browser.",
@@ -128,7 +128,7 @@
         "url": "https://github.com/marko-js/marko.git"
     },
     "publishConfig": {
-        "registry": "https://registry.npmjs.org/"
+        "registry": "https://nexus.drivenow.com.au/repository/npm-private/"
     },
     "author": "Patrick Steele-Idem <pnidem@gmail.com>",
     "maintainers": [
