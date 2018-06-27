@@ -25,10 +25,30 @@ module.exports = function defineComponent(def, renderer) {
 
     ComponentClass.prototype = proto;
 
+    /**
+     * little hack to allow components to be annotated
+     *
+     * TODO see if we can use a custom tag like mobx {} and access this information from here
+     *
+     * for now, just add the following to a component class to make it react to mobx state changes
+     *
+     * class {
+     *   mobxObservable(){}
+     * }
+     *
+     */
     if (proto.mobxObservable) {
+        // trying to work out the most reliale way of forcing an update, so far state-change is the preference
+        // it just introduces a ___mobx property into the component state, or creates the state if not defined
+        // TODO need to consider serilisation for when used on a server rendered component
         let MODE_STATE_CHANGE = "state-change";
+
+        // force-update seems to miss some updates, requiring a update() call to get it on track
         let MODE_FORCE_UPDATE = "force-update";
+
+        // calling forceUpdate(); update() is updat()-ing more times than necessary
         let MODE_FORCE_UPDATE_UPDATE = "force-update-update";
+
         let UPDATE_MODE = MODE_STATE_CHANGE;
 
         let onDestroy = proto.onDestroy;
@@ -71,6 +91,8 @@ module.exports = function defineComponent(def, renderer) {
                 }
             }
         };
+
+        // hook which renderer.js calls
         proto.___mobx_render = function(renderFunc) {
             this.$mobx.track(() => {
                 mobx._allowStateChanges(false, () => {
