@@ -5,6 +5,7 @@ var BaseState = require("./State");
 var BaseComponent = require("./Component");
 var inherit = require("raptor-util/inherit");
 var mobx = require("mobx");
+
 module.exports = function defineComponent(def, renderer) {
     if (def.___isComponent) {
         return def;
@@ -59,10 +60,27 @@ module.exports = function defineComponent(def, renderer) {
         };
         let onCreate = proto.onCreate;
         proto.onCreate = function() {
-            // if (this.mobxObservable())
-            // console.log("mobxObservable", this.mobxObservable());
+            this.___mobx_init();
 
-            this.$mobx = new mobx.Reaction("reaction-" + this.id, () => {
+            if (onCreate) onCreate.apply(this, arguments);
+
+            if (UPDATE_MODE == MODE_STATE_CHANGE) {
+                if (!this.state) {
+                    this.state = {
+                        ___mobx: 0
+                    };
+                } else {
+                    this.state.___set("___mobx", 0, true, false);
+                }
+            }
+        };
+
+        proto.___mobx_init = function() {
+            if (this.$mobx) return false;
+
+            // if (this.mobxObservable())console.log("mobxObservable", this.mobxObservable());
+
+            this.$mobx = new mobx.Reaction(this.___type, () => {
                 // let o = this.mobxObservable();
                 // if (o) console.log("mobxObservable-forceUpdate", this);
                 // if (o == "debugger") debugger;
@@ -77,27 +95,13 @@ module.exports = function defineComponent(def, renderer) {
                 }
             });
 
-            if (onCreate) {
-                onCreate.apply(this, arguments);
-            }
-
-            if (UPDATE_MODE == MODE_STATE_CHANGE) {
-                if (!this.state) {
-                    this.state = {
-                        ___mobx: 0
-                    };
-                } else {
-                    this.state.___set("___mobx", 0, true, false);
-                }
-            }
+            return true;
         };
 
         // hook which renderer.js calls
         proto.___mobx_render = function(renderFunc) {
             this.$mobx.track(() => {
-                mobx._allowStateChanges(false, () => {
-                    renderFunc();
-                });
+                mobx._allowStateChanges(false, renderFunc);
             });
         };
     }
