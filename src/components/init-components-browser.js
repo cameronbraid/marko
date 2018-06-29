@@ -303,7 +303,7 @@ function initServerRendered(renderedComponents, doc) {
     let components = [].concat(___mobx_init_from_server);
     ___mobx_init_from_server = null;
     components.forEach(c => {
-        c.forceUpdate();
+        c.___mobx_mark_dirty();
     });
 }
 

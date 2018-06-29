@@ -51,7 +51,20 @@ module.exports = function defineComponent(def, renderer) {
         let MODE_FORCE_UPDATE_UPDATE = "force-update-update";
 
         let UPDATE_MODE = MODE_STATE_CHANGE;
-
+        if (UPDATE_MODE == MODE_STATE_CHANGE) {
+            proto.___mobx_mark_dirty = function() {
+                this.state.___mobx++;
+            };
+        } else if (UPDATE_MODE == MODE_FORCE_UPDATE) {
+            proto.___mobx_mark_dirty = function() {
+                this.forceUpdate();
+            };
+        } else if (UPDATE_MODE == MODE_FORCE_UPDATE_UPDATE) {
+            proto.___mobx_mark_dirty = function() {
+                this.forceUpdate();
+                this.update();
+            };
+        }
         let onDestroy = proto.onDestroy;
         proto.onDestroy = function() {
             this.$mobx && this.$mobx.dispose();
@@ -77,24 +90,11 @@ module.exports = function defineComponent(def, renderer) {
 
         proto.___mobx_init = function() {
             if (this.$mobx) return false;
-
             // if (this.mobxObservable())console.log("mobxObservable", this.mobxObservable());
-
-            this.$mobx = new mobx.Reaction(this.___type, () => {
-                // let o = this.mobxObservable();
-                // if (o) console.log("mobxObservable-forceUpdate", this);
-                // if (o == "debugger") debugger;
-
-                if (UPDATE_MODE == MODE_STATE_CHANGE) {
-                    this.state.___mobx++;
-                } else if (UPDATE_MODE == MODE_FORCE_UPDATE) {
-                    this.forceUpdate();
-                } else if (UPDATE_MODE == MODE_FORCE_UPDATE_UPDATE) {
-                    this.forceUpdate();
-                    this.update();
-                }
-            });
-
+            this.$mobx = new mobx.Reaction(
+                this.___type,
+                this.___mobx_mark_dirty.bind(this)
+            );
             return true;
         };
 
