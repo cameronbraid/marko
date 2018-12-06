@@ -4,6 +4,7 @@
 var BaseState = require("./State");
 var BaseComponent = require("./Component");
 var inherit = require("raptor-util/inherit");
+var mobxHelper = require("../helper-mobx.js");
 
 module.exports = function defineComponent(def, renderer) {
     if (def.___isComponent) {
@@ -24,6 +25,8 @@ module.exports = function defineComponent(def, renderer) {
     }
 
     ComponentClass.prototype = proto;
+
+    mobxHelper.defineComponent(proto);
 
     // We don't use the constructor provided by the user
     // since we don't invoke their constructor until
