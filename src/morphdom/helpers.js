@@ -31,8 +31,22 @@ function firstChild(node) {
 }
 
 function removeChild(node) {
-    if (node.remove) node.remove();
-    else node.parentNode.removeChild(node);
+    try {
+        if (node.remove) node.remove();
+        else node.parentNode.removeChild(node);
+    } catch (e) {
+        /*eslint-disable */
+
+        try {
+            node.style.display = "none";
+        } catch (e) {}
+        console.warn(
+            "Unable to remove node, hiding node and ignoring exception"
+        );
+        console.warn(e);
+
+        /*eslint-enable */
+    }
 }
 
 exports.___insertBefore = insertBefore;
