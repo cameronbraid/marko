@@ -254,6 +254,15 @@ function initClientRendered(componentDefs, doc) {
  * This method initializes all components that were rendered on the server by iterating over all
  * of the component IDs.
  */
+
+function initServerRenderedGlobals() {
+    var globals = window.$MG;
+    if (globals) {
+        serverRenderedGlobals = warp10Finalize(globals);
+        delete window.$MG;
+    }
+    return serverRenderedGlobals;
+}
 function initServerRendered(renderedComponents, doc) {
     if (!renderedComponents) {
         renderedComponents = win.$components;
@@ -284,11 +293,7 @@ function initServerRendered(renderedComponents, doc) {
     indexServerComponentBoundaries(doc, runtimeId);
     eventDelegation.___init(doc);
 
-    var globals = window.$MG;
-    if (globals) {
-        serverRenderedGlobals = warp10Finalize(globals);
-        delete window.$MG;
-    }
+    initServerRenderedGlobals();
 
     // hydrate components top down (leaf nodes last)
     // and return an array of functions to mount these components
@@ -369,3 +374,4 @@ function trackComponent(componentDef) {
 
 exports.___initClientRendered = initClientRendered;
 exports.___initServerRendered = initServerRendered;
+exports.___initServerRenderedGlobals = initServerRenderedGlobals;
