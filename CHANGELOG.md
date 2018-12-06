@@ -4,6 +4,14 @@
 
 ## 4.12.x
 
+### drivenow-mobx
+
+- use drivenow npm repo for publishing, update version to reflect branch
+- place component-globals at end of body
+- provide hook to get serialized globals before component init
+- support array like objects in for tag
+- mobx state management
+
 ### 4.12.2
 
 - Fixes automatic keying of elements/components in `for()` attribute loops
