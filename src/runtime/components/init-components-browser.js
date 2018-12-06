@@ -254,6 +254,18 @@ function initClientRendered(componentDefs, doc) {
  * This method initializes all components that were rendered on the server by iterating over all
  * of the component IDs.
  */
+
+function initServerRenderedGlobals(runtimeId = "M") {
+    var markoGlobalsKey = "$" + runtimeId + "G";
+
+    var globals = win[markoGlobalsKey];
+    if (globals) {
+        serverRenderedGlobals = warp10Finalize(globals);
+        delete win[markoGlobalsKey];
+    }
+
+    return serverRenderedGlobals;
+}
 function initServerRendered(renderedComponents, doc) {
     var type = typeof renderedComponents;
     var runtimeId;
@@ -286,18 +298,13 @@ function initServerRendered(renderedComponents, doc) {
     runtimeId = renderedComponents.r;
     var componentDefs = renderedComponents.w;
     var typesArray = renderedComponents.t;
-    var markoGlobalsKey = "$" + runtimeId + "G";
 
     // Ensure that event handlers to handle delegating events are
     // always attached before initializing any components
     indexServerComponentBoundaries(doc, runtimeId);
     eventDelegation.___init(doc);
 
-    var globals = win[markoGlobalsKey];
-    if (globals) {
-        serverRenderedGlobals = warp10Finalize(globals);
-        delete win[markoGlobalsKey];
-    }
+    initServerRenderedGlobals(runtimeId);
 
     // hydrate components top down (leaf nodes last)
     // and return an array of functions to mount these components
@@ -388,3 +395,4 @@ function tryInvoke(fn) {
 
 exports.___initClientRendered = initClientRendered;
 exports.___initServerRendered = initServerRendered;
+exports.___initServerRenderedGlobals = initServerRenderedGlobals;
