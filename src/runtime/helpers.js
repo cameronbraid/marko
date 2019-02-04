@@ -93,6 +93,7 @@ var helpers = {
      * @private
      */
     f: function forEachHelper(array, callback) {
+        if (!array) return;
         if (isFunction(array)) {
             // Also allow the first argument to be a custom iterator function
             array(callback);
