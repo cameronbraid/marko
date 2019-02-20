@@ -13,40 +13,59 @@ module.exports = function(helpers) {
         viewTwo.update();
     }
 
-    expect(app.renderCount).to.equal(1);
-    expect(app.getEl("count").innerHTML).to.equal("0");
-    expect(viewOne.renderCount).to.equal(1);
-    expect(viewOne.getEl("value").innerHTML).to.equal("0");
-    expect(viewTwo.renderCount).to.equal(1);
-    expect(viewTwo.getEl("value").innerHTML).to.equal("0");
+    function snapshot() {
+        return {
+            appRenderCount: app.renderCount,
+            appCountHtml: app.getEl("count").innerHTML,
+            viewOneRenderCount: viewOne.renderCount,
+            viewOneCountHtml: viewOne.getEl("value").innerHTML,
+            viewTwoRenderCount: viewTwo.renderCount,
+            viewTwoCountHtml: viewTwo.getEl("value").innerHTML
+        };
+    }
+
+    expect(snapshot()).to.eql({
+        appRenderCount: 1,
+        appCountHtml: "0",
+        viewOneRenderCount: 1,
+        viewOneCountHtml: "0",
+        viewTwoRenderCount: 1,
+        viewTwoCountHtml: "0"
+    });
 
     Store.increment();
     update();
 
-    expect(app.renderCount).to.equal(2);
-    expect(app.getEl("count").innerHTML).to.equal("1");
-    expect(viewOne.renderCount).to.equal(1);
-    expect(viewOne.getEl("value").innerHTML).to.equal("0");
-    expect(viewTwo.renderCount).to.equal(1);
-    expect(viewTwo.getEl("value").innerHTML).to.equal("0");
+    expect(snapshot()).to.eql({
+        appRenderCount: 2,
+        appCountHtml: "1",
+        viewOneRenderCount: 1,
+        viewOneCountHtml: "0",
+        viewTwoRenderCount: 1,
+        viewTwoCountHtml: "0"
+    });
 
     Store.valueOne++;
     update();
 
-    expect(app.renderCount).to.equal(2);
-    expect(app.getEl("count").innerHTML).to.equal("1");
-    expect(viewOne.renderCount).to.equal(2);
-    expect(viewOne.getEl("value").innerHTML).to.equal("1");
-    expect(viewTwo.renderCount).to.equal(1);
-    expect(viewTwo.getEl("value").innerHTML).to.equal("0");
+    expect(snapshot()).to.eql({
+        appRenderCount: 2,
+        appCountHtml: "1",
+        viewOneRenderCount: 2,
+        viewOneCountHtml: "1",
+        viewTwoRenderCount: 1,
+        viewTwoCountHtml: "0"
+    });
 
     Store.valueTwo++;
     update();
 
-    expect(app.renderCount).to.equal(2);
-    expect(app.getEl("count").innerHTML).to.equal("1");
-    expect(viewOne.renderCount).to.equal(2);
-    expect(viewOne.getEl("value").innerHTML).to.equal("1");
-    expect(viewTwo.renderCount).to.equal(2);
-    expect(viewTwo.getEl("value").innerHTML).to.equal("1");
+    expect(snapshot()).to.eql({
+        appRenderCount: 2,
+        appCountHtml: "1",
+        viewOneRenderCount: 2,
+        viewOneCountHtml: "1",
+        viewTwoRenderCount: 2,
+        viewTwoCountHtml: "1"
+    });
 };
