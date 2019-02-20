@@ -18,9 +18,9 @@ module.exports = function(helpers) {
             appRenderCount: app.renderCount,
             appCountHtml: app.getEl("count").innerHTML,
             viewOneRenderCount: viewOne.renderCount,
-            viewOneCountHtml: viewOne.getEl("value").innerHTML,
+            viewOneValueHtml: viewOne.getEl("value").innerHTML,
             viewTwoRenderCount: viewTwo.renderCount,
-            viewTwoCountHtml: viewTwo.getEl("value").innerHTML
+            viewTwoValueHtml: viewTwo.getEl("value").innerHTML
         };
     }
 
@@ -28,9 +28,9 @@ module.exports = function(helpers) {
         appRenderCount: 1,
         appCountHtml: "0",
         viewOneRenderCount: 1,
-        viewOneCountHtml: "0",
+        viewOneValueHtml: "0",
         viewTwoRenderCount: 1,
-        viewTwoCountHtml: "0"
+        viewTwoValueHtml: "0"
     });
 
     Store.increment();
@@ -40,9 +40,9 @@ module.exports = function(helpers) {
         appRenderCount: 2,
         appCountHtml: "1",
         viewOneRenderCount: 1,
-        viewOneCountHtml: "0",
+        viewOneValueHtml: "0",
         viewTwoRenderCount: 1,
-        viewTwoCountHtml: "0"
+        viewTwoValueHtml: "0"
     });
 
     Store.valueOne++;
@@ -52,9 +52,9 @@ module.exports = function(helpers) {
         appRenderCount: 2,
         appCountHtml: "1",
         viewOneRenderCount: 2,
-        viewOneCountHtml: "1",
+        viewOneValueHtml: "1",
         viewTwoRenderCount: 1,
-        viewTwoCountHtml: "0"
+        viewTwoValueHtml: "0"
     });
 
     Store.valueTwo++;
@@ -64,8 +64,8 @@ module.exports = function(helpers) {
         appRenderCount: 2,
         appCountHtml: "1",
         viewOneRenderCount: 2,
-        viewOneCountHtml: "1",
+        viewOneValueHtml: "1",
         viewTwoRenderCount: 2,
-        viewTwoCountHtml: "1"
+        viewTwoValueHtml: "1"
     });
 };
