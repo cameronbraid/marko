@@ -1,0 +1,18 @@
+import { extendObservable } from "mobx"
+class {
+    /*
+    mobxObservable(){}
+    */
+    onCreate () {
+        extendObservable(this, {
+            count: 0,
+        })
+    }
+    onMount () {
+        window.app = this;
+    }
+    increment () {
+        this.count++;
+    }
+}
+div.count key="count" -- ${component.count}

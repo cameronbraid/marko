@@ -1,0 +1,14 @@
+import { Store } from "../store"
+class {
+    mobxObservable(){}
+    onCreate() {
+        this.renderCount = 0
+    }
+    onRender() {
+        this.renderCount++
+    }
+    onMount() {
+        window.viewTwo = this
+    }
+}
+div.view-one key="value" -- ${Store.valueTwo}
