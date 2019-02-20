@@ -24,47 +24,40 @@ module.exports = function(helpers) {
         };
     }
 
-    expect(snapshot()).to.eql({
+    var expected = {
         appRenderCount: 1,
         appCountHtml: "0",
         viewOneRenderCount: 1,
         viewOneValueHtml: "0",
         viewTwoRenderCount: 1,
         viewTwoValueHtml: "0"
-    });
+    };
+
+    function expectChanged(changes) {
+        expected = Object.assign(expected, changes);
+        expect(snapshot()).to.eql(expected);
+    }
+
+    // verify initial state
+    expectChanged({});
 
     Store.increment();
     update();
-
-    expect(snapshot()).to.eql({
+    expectChanged({
         appRenderCount: 2,
-        appCountHtml: "1",
-        viewOneRenderCount: 1,
-        viewOneValueHtml: "0",
-        viewTwoRenderCount: 1,
-        viewTwoValueHtml: "0"
+        appCountHtml: "1"
     });
 
     Store.valueOne++;
     update();
-
-    expect(snapshot()).to.eql({
-        appRenderCount: 2,
-        appCountHtml: "1",
+    expectChanged({
         viewOneRenderCount: 2,
-        viewOneValueHtml: "1",
-        viewTwoRenderCount: 1,
-        viewTwoValueHtml: "0"
+        viewOneValueHtml: "1"
     });
 
     Store.valueTwo++;
     update();
-
-    expect(snapshot()).to.eql({
-        appRenderCount: 2,
-        appCountHtml: "1",
-        viewOneRenderCount: 2,
-        viewOneValueHtml: "1",
+    expectChanged({
         viewTwoRenderCount: 2,
         viewTwoValueHtml: "1"
     });
