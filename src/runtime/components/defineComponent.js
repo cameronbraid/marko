@@ -4,7 +4,7 @@
 var BaseState = require("./State");
 var BaseComponent = require("./Component");
 var inherit = require("raptor-util/inherit");
-var mobxHelper = require("./mobx-helper.js");
+var mobxHelper = require("../helper-mobx.js");
 
 module.exports = function defineComponent(def, renderer) {
     if (def.___isComponent) {

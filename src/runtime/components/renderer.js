@@ -9,7 +9,7 @@ var copyProps = require("raptor-util/copyProps");
 var isServer = componentsUtil.___isServer === true;
 var beginComponent = require("./beginComponent");
 var endComponent = require("./endComponent");
-var mobxHelper = require("./mobx-helper.js");
+var mobxHelper = require("../helper-mobx.js");
 
 var COMPONENT_BEGIN_ASYNC_ADDED_KEY = "$wa";
 
