@@ -1,6 +1,6 @@
 {
     "name": "marko",
-    "version": "4.17.1-drivenow-3",
+    "version": "4.17.1-drivenow-4",
     "license": "MIT",
     "description": "UI Components + streaming, async, high performance, HTML templating for Node.js and the browser.",
     "scripts": {

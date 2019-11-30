@@ -48,6 +48,7 @@ function defineComponent(proto) {
             //console.log("::onDestroy")
             this.___mobx_reaction && this.___mobx_reaction.dispose();
             delete this.___mobx_reaction;
+            delete this.___mobx_render; // sometimes a component is re-rendered after being disposed, so fall back to the normal render method in this case
             if (onDestroy) onDestroy.apply(this, arguments);
         };
         var onCreate = proto.onCreate;
