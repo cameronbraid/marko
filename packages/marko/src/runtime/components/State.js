@@ -2,7 +2,7 @@ var extend = require("raptor-util/extend");
 
 function ensure(state, propertyName) {
   var proto = state.constructor.prototype;
-  if (!(propertyName in proto)) {
+  if (!(propertyName in proto || propertyName in state)) {
     Object.defineProperty(proto, propertyName, {
       get: function() {
         return this.___raw[propertyName];
